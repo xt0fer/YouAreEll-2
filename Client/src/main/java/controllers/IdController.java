@@ -6,12 +6,16 @@ import java.util.HashMap;
 import models.Id;
 
 public class IdController {
-    private HashMap<String, Id> allIds;
+ 
+    private ArrayList<Id> idlist;
 
-    Id myId;
+    public IdController() {}
 
     public ArrayList<Id> getIds() {
-        return null;
+        if (this.idlist == null) {
+            // get the list of ids from the server.
+        }
+        return this.idlist;
     }
 
     public Id postId(Id id) {
