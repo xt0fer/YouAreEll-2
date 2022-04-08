@@ -1,19 +1,33 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
+import models.IdPojo;
 
 public class IdController {
  
-    private ArrayList<Id> idlist;
+    private List<IdPojo> idlist;
+    private IdPojo[] ids;
+    private ServerController svr = ServerController.shared();
 
     public IdController() {}
 
-    public ArrayList<Id> getIds() {
+    public List<IdPojo> getIds() {
         if (this.idlist == null) {
             // get the list of ids from the server.
+            String resultJSON = null;
+            try {
+                resultJSON = svr.getUrl("ids");
+                final ObjectMapper objectMapper = new ObjectMapper();
+                this.ids = objectMapper.readValue(resultJSON, IdPojo[].class);
+                this.idlist = (List<IdPojo>) Arrays.asList(this.ids);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return this.idlist;
     }

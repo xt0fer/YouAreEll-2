@@ -13,7 +13,7 @@ public class ServerController {
 
     private static ServerController svr = null;
 
-    private ServerController() {}
+    public ServerController() {}
 
     public static ServerController shared() {
         if (svr == null)
