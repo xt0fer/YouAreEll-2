@@ -1,7 +1,5 @@
 package controllers;
 
-import models.IdPojo;
-import models.MessagePojo;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

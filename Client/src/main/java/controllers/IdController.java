@@ -6,26 +6,25 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.Id;
-import models.IdPojo;
 
 public class IdController {
 
-    private List<IdPojo> idlist;
-    private IdPojo[] ids;
+    private List<Id> idlist;
+    private Id[] ids;
     private ServerController svr = ServerController.shared();
 
     public IdController() {
     }
 
-    public List<IdPojo> getIds() {
+    public List<Id> getIds() {
         if (this.idlist == null) {
             // get the list of ids from the server.
             String resultJSON = null;
             try {
                 resultJSON = svr.getUrl("ids");
                 final ObjectMapper objectMapper = new ObjectMapper();
-                this.ids = objectMapper.readValue(resultJSON, IdPojo[].class);
-                this.idlist = (List<IdPojo>) Arrays.asList(this.ids);
+                this.ids = objectMapper.readValue(resultJSON, Id[].class);
+                this.idlist = (List<Id>) Arrays.asList(this.ids);
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,8 +1,5 @@
 package views;
 
-import models.Message;
-import models.MessagePojo;
-
 public class MessageTextView {
 
     public MessageTextView() {}

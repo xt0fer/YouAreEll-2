@@ -1,14 +1,13 @@
 package views;
 
 import models.Id;
-import models.IdPojo;
 
 public class IdTextView {
 
     public IdTextView() {
     }
 
-    public String display(IdPojo m) {
+    public String display(Id m) {
         return m.toString();
     } 
 }
