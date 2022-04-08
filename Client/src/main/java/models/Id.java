@@ -36,6 +36,6 @@ public class Id {
 
     @Override
     public String toString() {
-        return this.name + " (" + this.github + ") ";
+        return this.name + " (" + this.github + ")";
     }
 }

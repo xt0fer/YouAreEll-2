@@ -9,12 +9,13 @@ import models.Id;
 import models.IdPojo;
 
 public class IdController {
- 
+
     private List<IdPojo> idlist;
     private IdPojo[] ids;
     private ServerController svr = ServerController.shared();
 
-    public IdController() {}
+    public IdController() {
+    }
 
     public List<IdPojo> getIds() {
         if (this.idlist == null) {
@@ -43,5 +44,5 @@ public class IdController {
     public Id putId(Id id) {
         return null;
     }
- 
+
 }

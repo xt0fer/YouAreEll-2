@@ -35,12 +35,15 @@ public class MessageController {
         }
         return this.msglist;
     }
+
     public List<Message> getMessagesForId(Id Id) {
         return null;
     }
+
     public Message getMessageForSequence(String seq) {
         return null;
     }
+
     public List<Message> getMessagesFromFriend(Id myId, Id friendId) {
         return null;
     }
@@ -48,5 +51,5 @@ public class MessageController {
     public Message postMessage(Id myId, Id toId, Message msg) {
         return null;
     }
- 
+
 }

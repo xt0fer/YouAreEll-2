@@ -1,14 +1,14 @@
 package views;
 
 import models.Id;
+import models.IdPojo;
 
 public class IdTextView {
-    private Id id;
 
     public IdTextView() {
     }
-    
-    @Override public String toString() {
-        return this.id.toString();
+
+    public String display(IdPojo m) {
+        return m.toString();
     } 
 }
