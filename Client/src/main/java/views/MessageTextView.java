@@ -1,10 +1,12 @@
 package views;
 
+import models.Message;
+
 public class MessageTextView {
 
     public MessageTextView() {}
 
-    public String display(MessagePojo m) {
+    public String display(Message m) {
         return m.toString();
     } 
 }

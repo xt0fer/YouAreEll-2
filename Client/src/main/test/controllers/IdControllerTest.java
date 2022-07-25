@@ -1,6 +1,6 @@
 package controllers;
 
-import models.IdPojo;
+import models.Id;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ class IdControllerTest {
     @Test
     void getIds() {
         IdController idc = new IdController();
-        List<IdPojo> res = idc.getIds();
-        System.out.println(res);
+        List<Id> res = idc.getIds();
+        System.out.println(res.get(0));
         assertNotNull(res);
 
     }
