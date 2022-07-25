@@ -112,7 +112,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "\n----\nto: " + getToid() + "\nfrom: " + getFromid() + "\n" + getMessage() + "\n----\n";
+        return "To: " + getToid() + " From: " + getFromid() + " " + getMessage() + " " + getTimestamp() +"\n";
     }
 
 }
