@@ -15,21 +15,21 @@ public class TransactionController {
 
     private MessageController msgCtrl;
     private IdController idCtrl;
-    private IdTextView idView;
-    private MessageTextView msgView;
     private HashMap<String, Message> messageCache = new HashMap<>();
 
     public TransactionController(MessageController m, IdController j) {
         this.msgCtrl = m;
         this.idCtrl = j;
-        this.idView = new IdTextView();
-        this.msgView = new MessageTextView();
-
     }
 
     /**
      * I've decided to make TransactionController the main
      * "do it here" class, rather than go into MessageController
+     * 
+     * As I'm thinking this thru, I might NOT use the MessageController
+     * of the IDController, and just put all the functionality here in 
+     * TransactionController. I can do that, I'm the coder on this version.
+     * 
      */
     public TextView getNewMessages() {
         List<Message> newMsgs = this.filterOutSeenMsgs(msgCtrl.getMessages());
@@ -42,6 +42,7 @@ public class TransactionController {
      * 
      */
     private List<Message> filterOutSeenMsgs(List<Message> currentMessages) {
+        // this uses a HashMap to create a cache of already seen messages.
         List<Message> newlist = new ArrayList<Message>();
         for (Message m: currentMessages) {
             if (!messageCache.containsKey(m.getSequence())){

@@ -11,8 +11,9 @@ import models.Message;
 
 public class MessageController {
 
-    private HashSet<Message> messagesSeen;
+    // private HashSet<Message> messagesSeen;
     // why a HashSet??
+    // moved this Functionality to TransactionController.
     private List<Message> msglist;
     private Message[] msgs;
     private ServerController svr = ServerController.shared();
