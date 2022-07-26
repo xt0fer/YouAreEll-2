@@ -1,11 +1,11 @@
 package youareell;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import controllers.*;
-import models.Message;
-import models.Result;
-import views.MessageTextView;
 import views.TextView;
 
 public class YouAreEll {
@@ -14,7 +14,7 @@ public class YouAreEll {
     private boolean _debug = true;
     private String inviteString = "YouAreEll(URL) v1.1";
     private TextView view;
-    private Result resultFromCommand;
+    //private Result resultFromCommand;
 
     public YouAreEll (TransactionController t) {
         this.tt = t;
@@ -27,20 +27,34 @@ public class YouAreEll {
                 new MessageController(), new IdController()
         ));
 
-        app.runMainloop();
+        app.runMainLoop();
     }
 
-    private void runMainloop() {
+    // Used to bundle Command Enum with strings from commandline
+    class CommandLine { 
+        private Command cmd;
+        private List<String> list;
+        CommandLine(Command c, List<String> tokens) {
+            cmd = c; list = tokens;
+        }
+        Command getCmd() {
+            return this.cmd;
+        }
+        List<String> getLine() {
+            return this.list;
+        }
+    }
+    private void runMainLoop() {
+        CommandLine cmdLine = null;
         Command op = null;
         Boolean fault = false;
         
         this.showInvite();
         while (true) {
-            op = processInput("? ");
-
-            if (_debug) {
-            System.err.printf("State: %s ??\n", op);
-            }
+            cmdLine = processInput("? ");
+            op = cmdLine.getCmd();
+            
+            // if (_debug) System.err.printf("State: %s ??\n", op);
 
             if (op == Command.QUIT) break; // while loop, we're done.
 
@@ -52,19 +66,14 @@ public class YouAreEll {
                     this.display(true);
                     break;
                 default:
-                fault = this.reactTo(op);
-                this.display(fault);    
+                fault = this.display(this.eval(op));    
             }
 
         }
     }
 
 
-    /**
-     * 
-     * @param op
-     * @return fault
-     * 
+    /** 
      * Ids
      *  ids
      *      should return all the githubIDs of the system
@@ -74,51 +83,49 @@ public class YouAreEll {
      * Messages
      * `messages` 
      *     should return the last 20 messages, nicely formatted.
-     * `mymessages` 
-     *      should return the last 20 messages sent to you.
+     * //`mine` 
+     * //     should return the last 20 messages sent to you.
      * `send 'Hello World' ` 
      *     should post a new message in the timeline
      * `send 'my string message' to some_friend_githubid` 
      *     should post a message to your friend from you on the timeline.
      * `send 'Hello old buddy!' to torvalds`
      */
-    private Boolean reactTo(Command op) {
-        boolean f = false;
-
-        if (op == Command.MSG) {
-            StringBuilder s = new StringBuilder();
-            List<Message> lm = tt.getNewMessages();
-            for (Message m: lm) {
-                s.append(m.toString());
-            }
-            this.view = new MessageTextView(s.toString());
-            f = false;
+    private Boolean eval(Command op) {
+        if (op == Command.MSG) { // no commandline args used
+            this.view = tt.getNewMessages();
+            return false;
         }
-        return f;
+        // more commands eval's here
+        return true; // command not eval, hence error
     }
 
-    private void printHelp() {
-    }
-
-    private Command processInput(String prompt) {
-        String input = Console.getStringInput(prompt);
-        Command cmd = Command.get(input);
+    private CommandLine processInput(String prompt) {
+        String commandLine = Console.getStringInput(prompt);
+        String[] tokens = commandLine.split("\\W(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        List<String> tokenList = new ArrayList<>();
+        tokenList = Arrays.asList(tokens);
         
-        return cmd;
+        if (_debug) Stream.of(tokens).forEach(System.err::println); 
+        
+        return new CommandLine(Command.get(tokens[0]), tokenList);
     }
 
     private void showInvite() {
         Console.println("%s", inviteString);
     }
 
-    private void display(Boolean fault) {
+    private boolean display(Boolean fault) {
         if (fault) {
             Console.print("= Err\t");
-            return;
+            return fault;
         }
         Console.print("%s\n",this.view.toString());
+        return fault;
      }
 
+     private void printHelp() {
+    }
 
     private void runTests() {
         

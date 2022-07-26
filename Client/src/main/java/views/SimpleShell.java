@@ -12,6 +12,8 @@ import controllers.MessageController;
 import controllers.TransactionController;
 import youareell.YouAreEll;
 
+// I'm not using this, -Kris
+
 // Simple Shell is a Console view for youareell.YouAreEll.
 public class SimpleShell {
 

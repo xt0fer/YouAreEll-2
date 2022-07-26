@@ -4,6 +4,7 @@ import models.Id;
 import models.Message;
 import views.IdTextView;
 import views.MessageTextView;
+import views.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +27,30 @@ public class TransactionController {
 
     }
 
+    private List<Message> filterOutSeenMsgs(List<Message> currentMessages) {
+        List<Message> newlist = new ArrayList<Message>();
+        for (Message m: currentMessages) {
+            if (!messageCache.containsKey(m.getSequence())){
+                messageCache.put(m.getSequence(), m);
+                newlist.add(m);
+            }
+        }
+        return newlist;
+    }
+
+    public TextView getNewMessages() {
+        List<Message> newMsgs = this.filterOutSeenMsgs(msgCtrl.getMessages());
+        return new MessageTextView(this.collapseMsgsToString(newMsgs));
+    }
+
+    private String collapseMsgsToString(List<Message> now) {
+        StringBuilder s = new StringBuilder();
+        for (Message m: now) {
+            s.append(m.toString());
+        }
+        return s.toString();
+    }
+
     public List<Id> getIds() {
         return null;
     }
@@ -36,21 +61,8 @@ public class TransactionController {
         return ("Id registered.");
     }
 
-    public MessageController messageController() {
-        return this.msgCtrl;
-    }
+    // public MessageController messageController() {
+    //     return this.msgCtrl;
+    // }
 
-    public List<Message> getNewMessages() {
-        List<Message> now = msgCtrl.getMessages();
-        List<Message> newlist = new ArrayList<Message>();
-
-        for (Message m: now) {
-            if (!messageCache.containsKey(m.getSequence())){
-                messageCache.put(m.getSequence(), m);
-                newlist.add(m);
-            }
-        }
-
-        return newlist;
-    }
 }

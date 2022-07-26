@@ -6,7 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public enum Command {
     MSG("messages"),
-    MYMSG("mymessages"),
+    MYMSG("mine"),
+    SEND("send"),
     ERR("error"),
     QUIT("Quit"),
     HELP("?")
@@ -39,16 +40,4 @@ public enum Command {
         return ENUM_MAP.getOrDefault(name.toLowerCase(), Command.ERR);
     }
 
-    public static boolean isBinaryOp(Command op) {
-        // if (op == ADD ||
-        //     op == SUB ||
-        //     op == MUL ||
-        //     op == DIV ||
-        //     op == MOD ||
-        //     op == POWER) 
-        // {
-        //     return true;
-        // }
-        return false;
-    }
 }
