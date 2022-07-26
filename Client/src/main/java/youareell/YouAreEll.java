@@ -21,7 +21,7 @@ public class YouAreEll {
     }
 
     public static void main(String[] args) {
-        // hmm: is this Dependency Injection?
+        // hmm: this is Dependency Injection (?)
         YouAreEll app = new YouAreEll(
             new TransactionController(
                 new MessageController(), new IdController()
@@ -30,7 +30,7 @@ public class YouAreEll {
         app.runMainLoop();
     }
 
-    // Used to bundle Command Enum with strings from commandline
+    // Used to bundle Command Enum and strings from the commandline input
     class CommandLine { 
         private Command cmd;
         private List<String> list;
@@ -44,6 +44,8 @@ public class YouAreEll {
             return this.list;
         }
     }
+
+
     private void runMainLoop() {
         CommandLine cmdLine = null;
         Command op = null;
@@ -66,7 +68,7 @@ public class YouAreEll {
                     this.display(true);
                     break;
                 default:
-                fault = this.display(this.eval(op));    
+                fault = this.display(this.eval(cmdLine));    
             }
 
         }
@@ -90,8 +92,11 @@ public class YouAreEll {
      * `send 'my string message' to some_friend_githubid` 
      *     should post a message to your friend from you on the timeline.
      * `send 'Hello old buddy!' to torvalds`
+     * 
+     * eval() a command.
      */
-    private Boolean eval(Command op) {
+    private Boolean eval(CommandLine cmdLine) {
+        Command op = cmdLine.getCmd();
         if (op == Command.MSG) { // no commandline args used
             this.view = tt.getNewMessages();
             return false;
@@ -100,9 +105,17 @@ public class YouAreEll {
         return true; // command not eval, hence error
     }
 
+    // get input from user, and do some processing.
+    // the regex down there is aimed at breaking the command line up so that
+    // things in "quotes like this" are not broken into three different words
+    // but kept as a phrase.
     private CommandLine processInput(String prompt) {
         String commandLine = Console.getStringInput(prompt);
-        String[] tokens = commandLine.split("\\W(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        String[] tokens = commandLine.split("\\s(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+        // tried different patterns...
+        // "\\W(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        // "\\s(?=([^\"]*\"[^\"]*\")*[^\"]*$)"  <= chosen
+        // "(?<=\"")|(?=\"")" );
         List<String> tokenList = new ArrayList<>();
         tokenList = Arrays.asList(tokens);
         
@@ -115,6 +128,7 @@ public class YouAreEll {
         Console.println("%s", inviteString);
     }
 
+    // all output from here.
     private boolean display(Boolean fault) {
         if (fault) {
             Console.print("= Err\t");

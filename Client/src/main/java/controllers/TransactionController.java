@@ -27,6 +27,20 @@ public class TransactionController {
 
     }
 
+    /**
+     * I've decided to make TransactionController the main
+     * "do it here" class, rather than go into MessageController
+     */
+    public TextView getNewMessages() {
+        List<Message> newMsgs = this.filterOutSeenMsgs(msgCtrl.getMessages());
+        return new MessageTextView(this.collapseMsgsToString(newMsgs));
+    }
+
+    /**
+     * 
+     * ALL PRIVATE METHODS DOWN HERE.
+     * 
+     */
     private List<Message> filterOutSeenMsgs(List<Message> currentMessages) {
         List<Message> newlist = new ArrayList<Message>();
         for (Message m: currentMessages) {
@@ -38,11 +52,6 @@ public class TransactionController {
         return newlist;
     }
 
-    public TextView getNewMessages() {
-        List<Message> newMsgs = this.filterOutSeenMsgs(msgCtrl.getMessages());
-        return new MessageTextView(this.collapseMsgsToString(newMsgs));
-    }
-
     private String collapseMsgsToString(List<Message> now) {
         StringBuilder s = new StringBuilder();
         for (Message m: now) {
@@ -51,10 +60,12 @@ public class TransactionController {
         return s.toString();
     }
 
+    //not used
     public List<Id> getIds() {
         return null;
     }
 
+    // not used
     public String postId(String idtoRegister, String githubName) {
 //        Id tid = new Id(idtoRegister, githubName);
 //        tid = idCtrl.postId(tid);

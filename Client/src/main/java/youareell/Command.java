@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * this is the main ENUM for mapping strings to Commands.
+ * it generates a Map of String to Command, handles bad input well.
+ */
 public enum Command {
     MSG("messages"),
     MYMSG("mine"),
